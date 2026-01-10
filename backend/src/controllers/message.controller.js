@@ -7,9 +7,44 @@ import { getReceiverSocketId, io } from "../lib/socket.js";
 export const getUsersForSidebar = async (req, res) => {
   try {
     const loggedInUserId = req.user._id;
-    const filteredUsers = await User.find({ _id: { $ne: loggedInUserId } }).select("-password");
+    const filteredUsers = await User.find({
+      _id: { $ne: loggedInUserId },
+    }).select("-password");
 
-    res.status(200).json(filteredUsers);
+    // Get unread counts and last message for each user
+    const usersWithDetails = await Promise.all(
+      filteredUsers.map(async (user) => {
+        // Count unread messages from this user (read is false or doesn't exist)
+        const unreadCount = await Message.countDocuments({
+          senderId: user._id,
+          receiverId: loggedInUserId,
+          read: { $ne: true },
+        });
+
+        // Get last message between logged in user and this user
+        const lastMessage = await Message.findOne({
+          $or: [
+            { senderId: loggedInUserId, receiverId: user._id },
+            { senderId: user._id, receiverId: loggedInUserId },
+          ],
+        }).sort({ createdAt: -1 });
+
+        return {
+          ...user.toObject(),
+          unreadCount,
+          lastMessageTime: lastMessage?.createdAt || null,
+        };
+      })
+    );
+
+    // Sort by last message time (most recent first)
+    usersWithDetails.sort((a, b) => {
+      if (!a.lastMessageTime) return 1;
+      if (!b.lastMessageTime) return -1;
+      return new Date(b.lastMessageTime) - new Date(a.lastMessageTime);
+    });
+
+    res.status(200).json(usersWithDetails);
   } catch (error) {
     console.error("Error in getUsersForSidebar: ", error.message);
     res.status(500).json({ error: "Internal server error" });
@@ -65,6 +100,23 @@ export const sendMessage = async (req, res) => {
     res.status(201).json(newMessage);
   } catch (error) {
     console.log("Error in sendMessage controller: ", error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const markMessagesAsRead = async (req, res) => {
+  try {
+    const { id: senderId } = req.params;
+    const receiverId = req.user._id;
+
+    await Message.updateMany(
+      { senderId, receiverId, read: false },
+      { read: true }
+    );
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.log("Error in markMessagesAsRead controller: ", error.message);
     res.status(500).json({ error: "Internal server error" });
   }
 };
