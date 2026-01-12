@@ -125,6 +125,15 @@ export const useAuthStore = create((set, get) => ({
         });
       }
     });
+
+    // Listen for deleted messages to remove them in real-time
+    socket.on("messageDeleted", ({ messageId }) => {
+      useChatStore.setState({
+        messages: useChatStore.getState().messages.filter(
+          (msg) => msg._id !== messageId
+        ),
+      });
+    });
   },
   disconnectSocket: () => {
     if (get().socket?.connected) get().socket.disconnect();

@@ -1,8 +1,8 @@
 import { config } from "dotenv";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
-import { connectDB } from "../lib/db.js";
-import User from "../models/user.model.js";
+import bcrypt from "bcryptjs";
+import prisma from "../lib/prisma.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 config({ path: join(__dirname, "../../.env") });
@@ -105,12 +105,23 @@ const seedUsers = [
 
 const seedDatabase = async () => {
   try {
-    await connectDB();
+    // Hash passwords before inserting
+    const usersWithHashedPasswords = await Promise.all(
+      seedUsers.map(async (user) => ({
+        ...user,
+        password: await bcrypt.hash(user.password, 10),
+      }))
+    );
 
-    await User.insertMany(seedUsers);
-    console.log("Database seeded successfully");
+    await prisma.user.createMany({
+      data: usersWithHashedPasswords,
+    });
+    
+    console.log("Database seeded successfully with 15 users!");
   } catch (error) {
     console.error("Error seeding database:", error);
+  } finally {
+    await prisma.$disconnect();
   }
 };
 
