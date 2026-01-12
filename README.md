@@ -1,4 +1,4 @@
-# ✨ Full Stack Realtime Chat App ✨
+# Full Stack Realtime Chat App
 
 
 Highlights:
@@ -37,4 +37,5 @@ npm run build
 ```shell
 npm start
 ```
+
 
