@@ -1,6 +1,5 @@
 # Full Stack Realtime Chat App
 
-
 Highlights:
 
 - 🌟 Tech stack: MERN + Socket.io + TailwindCSS + Daisy UI
@@ -37,5 +36,6 @@ npm run build
 ```shell
 npm start
 ```
+
 
 
