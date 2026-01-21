@@ -25,6 +25,18 @@ app.use(
   })
 );
 
+// Add this BEFORE the production static file serving
+app.get("/", (req, res) => {
+  res.json({ 
+    message: "Chat App API Server",
+    status: "Running",
+    endpoints: {
+      auth: "/api/auth",
+      messages: "/api/messages"
+    }
+  });
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
