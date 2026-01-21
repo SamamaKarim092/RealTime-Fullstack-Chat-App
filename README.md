@@ -1,17 +1,5 @@
 # 💬 RealTime Fullstack Chat Application
 
-<div align="center">
-
-![Demo App](/frontend/public/screenshot-for-readme.png)
-
-**A modern, feature-rich real-time chat application built with the MERN stack**
-
-[Live Demo](#) • [Video Tutorial](https://youtu.be/ntKkVrQqBYY) • [Report Bug](#) • [Request Feature](#)
-
-</div>
-
----
-
 ## 📋 Table of Contents
 
 - [About The Project](#about-the-project)
