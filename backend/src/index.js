@@ -20,20 +20,23 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin:
+      process.env.NODE_ENV === "production"
+        ? "https://realtime-fullstack-chat-app.vercel.app"
+        : "http://localhost:5173",
     credentials: true,
-  })
+  }),
 );
 
 // Add this BEFORE the production static file serving
 app.get("/", (req, res) => {
-  res.json({ 
+  res.json({
     message: "Chat App API Server",
     status: "Running",
     endpoints: {
       auth: "/api/auth",
-      messages: "/api/messages"
-    }
+      messages: "/api/messages",
+    },
   });
 });
 
