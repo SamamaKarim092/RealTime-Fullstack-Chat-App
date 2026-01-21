@@ -5,7 +5,9 @@ import { io } from "socket.io-client";
 import { useChatStore } from "./useChatStore";
 
 const BASE_URL =
-  import.meta.env.MODE === "development" ? "http://localhost:5001" : "https://realtime-fullstack-chat-app-backend.onrender.com";
+  import.meta.env.MODE === "development"
+    ? "http://localhost:5001"
+    : "https://realtime-fullstack-chat-app-backend.onrender.com";
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
@@ -41,7 +43,7 @@ export const useAuthStore = create((set, get) => ({
       toast.success("Account created successfully");
       get().connectSocket();
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Signup failed");
     } finally {
       set({ isSigningUp: false });
     }
@@ -56,7 +58,7 @@ export const useAuthStore = create((set, get) => ({
 
       get().connectSocket();
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Login failed");
     } finally {
       set({ isLoggingIn: false });
     }
@@ -69,7 +71,7 @@ export const useAuthStore = create((set, get) => ({
       toast.success("Logged out successfully");
       get().disconnectSocket();
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Logout failed");
     }
   },
 
@@ -81,7 +83,7 @@ export const useAuthStore = create((set, get) => ({
       toast.success("Profile updated successfully");
     } catch (error) {
       console.log("error in update profile:", error);
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Profile update failed");
     } finally {
       set({ isUpdatingProfile: false });
     }
@@ -123,7 +125,7 @@ export const useAuthStore = create((set, get) => ({
                   unreadCount: (user.unreadCount || 0) + 1,
                   lastMessageTime: newMessage.createdAt,
                 }
-              : user
+              : user,
           ),
         });
       }
