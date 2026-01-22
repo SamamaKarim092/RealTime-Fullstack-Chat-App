@@ -1,5 +1,7 @@
 # 💬 RealTime Fullstack Chat Application
 
+> A modern, real-time chat application built with React, Node.js, Socket.io, and MongoDB. Features instant messaging, user authentication, online status indicators, image sharing, and multiple theme options.
+
 ## 🌐 Live Demo
 
 ![RealTime Chat App](image.png)
