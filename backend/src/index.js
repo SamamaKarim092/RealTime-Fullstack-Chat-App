@@ -20,10 +20,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin:
-      process.env.NODE_ENV === "production"
-        ? "https://realtime-fullstack-chat-app.vercel.app"
-        : "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "https://realtime-fullstack-chat-app.vercel.app",
+    ],
     credentials: true,
   }),
 );
