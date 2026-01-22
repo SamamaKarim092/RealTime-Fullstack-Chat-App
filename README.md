@@ -403,7 +403,7 @@ Distributed under the MIT License. See `LICENSE` file for more information.
 
 ## 👤 Contact
 
-Your Name - [@yourtwitter](https://twitter.com/yourtwitter)
+Your Name - [Samama Karim](https://twitter.com/yourtwitter)
 
 Project Link: [https://github.com/SamamaKarim092/RealTime-Fullstack-Chat-App](https://github.com/SamamaKarim092/RealTime-Fullstack-Chat-App)
 
