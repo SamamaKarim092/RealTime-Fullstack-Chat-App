@@ -1,5 +1,16 @@
 # 💬 RealTime Fullstack Chat Application
 
+## 🌐 Live Demo
+
+![RealTime Chat App](image.png)
+
+- **Frontend (Vercel)**: [https://realtime-fullstack-chat-app.vercel.app](https://realtime-fullstack-chat-app.vercel.app)
+- **Backend (Render)**: [https://realtime-fullstack-chat-app-backend.onrender.com](https://realtime-fullstack-chat-app-backend.onrender.com)
+
+> **Note**: The backend is hosted on Render's free tier, so the first request may take 30-60 seconds to wake up the server.
+
+---
+
 ## 📋 Table of Contents
 
 - [About The Project](#about-the-project)
@@ -343,6 +354,44 @@ RealTime-Fullstack-Chat-App/
 
 - `getOnlineUsers` - Receive list of online users
 - `newMessage` - Receive new message in real-time
+
+---
+
+## 🚀 Deployment
+
+This application is deployed using:
+
+### Frontend - Vercel
+
+The React frontend is deployed on **Vercel**:
+
+- **URL**: [https://realtime-fullstack-chat-app.vercel.app](https://realtime-fullstack-chat-app.vercel.app)
+- **Auto-deployment**: Connected to GitHub for automatic deployments on push
+- **Build Command**: `npm run build`
+- **Output Directory**: `dist`
+
+### Backend - Render
+
+The Express backend is deployed on **Render**:
+
+- **URL**: [https://realtime-fullstack-chat-app-backend.onrender.com](https://realtime-fullstack-chat-app-backend.onrender.com)
+- **Auto-deployment**: Connected to GitHub for automatic deployments on push
+- **Environment Variables**: Set in Render dashboard
+  - `NODE_ENV=production`
+  - `MONGODB_URI`
+  - `JWT_SECRET`
+  - `CLOUDINARY_CLOUD_NAME`
+  - `CLOUDINARY_API_KEY`
+  - `CLOUDINARY_API_SECRET`
+
+> **Note**: Render's free tier may cause the backend to sleep after inactivity. The first request after sleeping takes 30-60 seconds to wake up the server.
+
+### Database - MongoDB Atlas
+
+MongoDB database is hosted on **MongoDB Atlas** (cloud):
+
+- Free tier cluster
+- Configured to allow connections from all IPs (0.0.0.0/0)
 
 ---
 
