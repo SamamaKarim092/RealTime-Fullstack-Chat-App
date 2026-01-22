@@ -25,8 +25,6 @@
 - [API Endpoints](#api-endpoints)
 - [Deployment](#deployment)
 - [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
 
 ---
 
@@ -392,20 +390,6 @@ MongoDB database is hosted on **MongoDB Atlas** (cloud):
 
 - Free tier cluster
 - Configured to allow connections from all IPs (0.0.0.0/0)
-
----
-
-## 📝 License
-
-Distributed under the MIT License. See `LICENSE` file for more information.
-
----
-
-## 👤 Contact
-
-Your Name - [Samama Karim](https://twitter.com/yourtwitter)
-
-Project Link: [https://github.com/SamamaKarim092/RealTime-Fullstack-Chat-App](https://github.com/SamamaKarim092/RealTime-Fullstack-Chat-App)
 
 ---
 
