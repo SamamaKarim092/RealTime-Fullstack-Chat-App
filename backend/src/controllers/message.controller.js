@@ -34,7 +34,7 @@ export const getUsersForSidebar = async (req, res) => {
           unreadCount,
           lastMessageTime: lastMessage?.createdAt || null,
         };
-      })
+      }),
     );
 
     // Sort by last message time (most recent first)
@@ -76,6 +76,13 @@ export const sendMessage = async (req, res) => {
     const { id: receiverId } = req.params;
     const senderId = req.user._id;
 
+    console.log("Sending message:", {
+      senderId,
+      receiverId,
+      text,
+      hasImage: !!image,
+    });
+
     let imageUrl;
     if (image) {
       // Upload base64 image to cloudinary
@@ -91,6 +98,7 @@ export const sendMessage = async (req, res) => {
     });
 
     await newMessage.save();
+    console.log("Message saved to DB:", newMessage._id);
 
     const receiverSocketId = getReceiverSocketId(receiverId);
     if (receiverSocketId) {
@@ -111,7 +119,7 @@ export const markMessagesAsRead = async (req, res) => {
 
     await Message.updateMany(
       { senderId, receiverId, read: false },
-      { read: true }
+      { read: true },
     );
 
     res.status(200).json({ success: true });
