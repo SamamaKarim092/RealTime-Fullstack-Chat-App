@@ -32,9 +32,9 @@ A full-stack real-time chat application that enables instant communication with 
 
 ## 🚀 Tech Stack
 
-**Frontend:** React, Vite, TailwindCSS, DaisyUI, Zustand
-**Backend:** Node.js, Express.js, MongoDB, Socket.io
-**Other Tools:** Cloudinary, Axios, JWT
+* **Frontend:** React, Vite, TailwindCSS, DaisyUI, Zustand
+* **Backend:** Node.js, Express.js, MongoDB, Socket.io
+* **Other Tools:** Cloudinary, Axios, JWT
 
 ---
 
