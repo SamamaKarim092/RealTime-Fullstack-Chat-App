@@ -57,7 +57,6 @@ The frontend is deployed on Vercel and the backend on Render, with MongoDB Atlas
 ---
 
 ## 🙏 Acknowledgments
-
 * https://socket.io/docs/
 * https://docs.mongodb.com/
 * https://react.dev/
