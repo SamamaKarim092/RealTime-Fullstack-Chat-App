@@ -75,6 +75,17 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
+  deleteAccount: async () => {
+    try {
+      await axiosInstance.delete("/auth/delete-account");
+      set({ authUser: null });
+      toast.success("Account deleted successfully");
+      get().disconnectSocket();
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to delete account");
+    }
+  },
+
   updateProfile: async (data) => {
     set({ isUpdatingProfile: true });
     try {
@@ -129,6 +140,14 @@ export const useAuthStore = create((set, get) => ({
           ),
         });
       }
+    });
+
+    socket.on("messageUpdated", (updatedMessage) => {
+      const { messages } = useChatStore.getState();
+      const updatedMessages = messages.map((msg) =>
+        msg._id === updatedMessage._id ? updatedMessage : msg
+      );
+      useChatStore.setState({ messages: updatedMessages });
     });
   },
   disconnectSocket: () => {
