@@ -1,5 +1,6 @@
 import { generateToken } from "../lib/utils.js";
 import User from "../models/user.model.js";
+import Message from "../models/message.model.js";
 import bcrypt from "bcryptjs";
 import cloudinary from "../lib/cloudinary.js";
 
@@ -113,6 +114,28 @@ export const checkAuth = (req, res) => {
     res.status(200).json(req.user);
   } catch (error) {
     console.log("Error in checkAuth controller", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const deleteAccount = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    // Delete all messages sent or received by this user
+    await Message.deleteMany({
+      $or: [{ senderId: userId }, { receiverId: userId }],
+    });
+
+    // Delete user from DB
+    await User.findByIdAndDelete(userId);
+
+    // Clear JWT cookie
+    res.cookie("jwt", "", { maxAge: 0 });
+
+    res.status(200).json({ message: "Account and associated messages deleted successfully" });
+  } catch (error) {
+    console.log("Error in deleteAccount controller", error.message);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
