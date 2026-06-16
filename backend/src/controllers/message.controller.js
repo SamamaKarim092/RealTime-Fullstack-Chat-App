@@ -128,3 +128,78 @@ export const markMessagesAsRead = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const editMessage = async (req, res) => {
+  try {
+    const { text } = req.body;
+    const { id: messageId } = req.params;
+    const userId = req.user._id;
+
+    // Find the message
+    const message = await Message.findById(messageId);
+
+    if (!message) {
+      return res.status(404).json({ error: "Message not found" });
+    }
+
+    // Check if the user is the sender of the message
+    if (message.senderId.toString() !== userId.toString()) {
+      return res.status(403).json({ error: "You are not authorized to edit this message" });
+    }
+
+    // Update the message text and mark as edited
+    message.text = text;
+    message.isEdited = true;
+    
+    await message.save();
+
+    // Broadcast the updated message to the receiver
+    const receiverSocketId = getReceiverSocketId(message.receiverId);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("messageUpdated", message);
+    }
+
+    res.status(200).json(message);
+  } catch (error) {
+    console.log("Error in editMessage controller: ", error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const deleteMessage = async (req, res) => {
+  try {
+    const { id: messageId } = req.params;
+    const userId = req.user._id;
+
+    // Find the message
+    const message = await Message.findById(messageId);
+
+    if (!message) {
+      return res.status(404).json({ error: "Message not found" });
+    }
+
+    // Check if the user is the sender of the message
+    if (message.senderId.toString() !== userId.toString()) {
+      return res.status(403).json({ error: "You are not authorized to delete this message" });
+    }
+
+    // Update message to reflect deletion (WhatsApp style)
+    message.text = "This message was deleted";
+    message.image = undefined;
+    message.isDeleted = true;
+
+    await message.save();
+
+    // Broadcast the message updated event to the receiver
+    const receiverSocketId = getReceiverSocketId(message.receiverId);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("messageUpdated", message);
+    }
+
+    res.status(200).json(message);
+  } catch (error) {
+    console.log("Error in deleteMessage controller: ", error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
