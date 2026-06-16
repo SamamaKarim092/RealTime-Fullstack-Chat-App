@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
-import { Camera, Mail, User } from "lucide-react";
+import { Camera, Mail, User, Trash2 } from "lucide-react";
 
 const ProfilePage = () => {
-  const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
+  const { authUser, isUpdatingProfile, updateProfile, deleteAccount } = useAuthStore();
   const [selectedImg, setSelectedImg] = useState(null);
 
   const handleImageUpload = async (e) => {
@@ -19,6 +19,12 @@ const ProfilePage = () => {
       setSelectedImg(base64Image);
       await updateProfile({ profilePic: base64Image });
     };
+  };
+
+  const handleDeleteAccount = async () => {
+    if (window.confirm("Are you sure you want to permanently delete your account? This action is irreversible and will delete all your chats and messages.")) {
+      await deleteAccount();
+    }
   };
 
   return (
@@ -95,6 +101,20 @@ const ProfilePage = () => {
                 <span className="text-green-500">Active</span>
               </div>
             </div>
+          </div>
+
+          <div className="mt-6 bg-red-950/20 border border-red-500/20 rounded-xl p-6">
+            <h2 className="text-lg font-medium text-red-500 mb-2">Danger Zone</h2>
+            <p className="text-sm text-zinc-400 mb-4">
+              Permanently delete your account and all associated messages. This action cannot be undone.
+            </p>
+            <button
+              onClick={handleDeleteAccount}
+              className="btn btn-error text-white w-full flex items-center justify-center gap-2 hover:bg-red-600 transition-colors"
+            >
+              <Trash2 className="size-5" />
+              Delete Account
+            </button>
           </div>
         </div>
       </div>
